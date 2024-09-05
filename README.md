@@ -1,9 +1,9 @@
 # TicTacToe
 
-TicTacToe GUI in Java
+Tic Tac Toe GUI in Java
 
-##Features
-Varaible Board Size
-Variable Win-Condition, eg: 3 in a row, 5 in a row
-Multi-Player Functionality
-GUI using JFrame
+## Features
+- Variable board size
+- Variable win condition (e.g., 3 in a row, 5 in a row)
+- Multi-player functionality
+- GUI using `JFrame`
