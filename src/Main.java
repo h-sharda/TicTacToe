@@ -128,7 +128,7 @@ public class Main {
         PLAYERS = sc.nextInt();
 
         char[][] BOARD = new char[BOARD_SIZE][BOARD_SIZE];
-        char[] playerList = {'X','O','◇','Δ','☆'};
+        char[] playerList = {'X','O','A', 'B', 'C'};
         char currentPlayer = playerList[0];
         int playerPos =0;
 

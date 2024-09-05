@@ -7,7 +7,7 @@ import java.util.Stack;
 public class TicTacToeGUI extends JFrame implements ActionListener {
     private static final int SIZE = 7;
     private static final int WIN_CONDITION = 4;
-    private static final int NUMBER_OF_PLAYERS = 3;
+    private static final int NUMBER_OF_PLAYERS = 5;
     private final JButton[][] buttons;
     private char currentPlayer;
     private boolean gameEnded = false;
@@ -15,7 +15,7 @@ public class TicTacToeGUI extends JFrame implements ActionListener {
     private final JLabel statusLabel = new JLabel("", SwingConstants.CENTER);
 
     // Player symbols
-    private final char[] playerSymbols = {'X', 'O', 'Δ', '◇'};
+    private final char[] playerSymbols = {'X','Y' , '\u0394','\u25C7', '\u2606'};
 
     public TicTacToeGUI() {
         buttons = new JButton[SIZE][SIZE];
