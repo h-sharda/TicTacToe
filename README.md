@@ -7,3 +7,6 @@ Tic Tac Toe GUI in Java
 - Variable win condition (e.g., 3 in a row, 5 in a row)
 - Multi-player functionality
 - GUI using `JFrame`
+
+### Main runs the game in the command Prompt
+### TicTacToeGUI runs the game in JFrame 
