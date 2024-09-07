@@ -8,5 +8,5 @@ Tic Tac Toe GUI in Java
 - Multi-player functionality
 - GUI using `JFrame`
 
-### Main runs the game in the command Prompt
-### TicTacToeGUI runs the game in JFrame 
+### Main.java runs the game in the command Prompt
+### TicTacToeGUI.java runs the game in JFrame 
