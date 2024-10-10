@@ -1,5 +1,5 @@
 *.class
 .idea/
 *.iml
-Trial.java
+src/Trial.java
 /out
