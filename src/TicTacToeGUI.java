@@ -15,7 +15,7 @@ public class TicTacToeGUI extends JFrame implements ActionListener {
     private final JLabel statusLabel = new JLabel("", SwingConstants.CENTER);
 
     // Player symbols
-    private final char[] playerSymbols = {'X','Y' , '\u0394','\u25C7', '\u2606'};
+    private final char[] playerSymbols = {'X','O' , 'Δ','◇', '☆'};
 
     public TicTacToeGUI() {
         buttons = new JButton[SIZE][SIZE];
