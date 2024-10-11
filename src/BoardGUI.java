@@ -8,10 +8,13 @@ public class BoardGUI {
     static final Color BACKGROUND_COLOR = new Color(220, 220, 220);
 
     static final Font LABEL_FONT = new Font("Arial Unicode MS", Font.PLAIN, 20);
-    static final Font SYMBOL_FONT = new Font("Arial Unicode MS", Font.BOLD, 30);
 
     static final Color BUTTON_COLOR = new Color(200,200,255);
     static final Font BUTTON_FONT = new Font("Arial Unicode MS", Font.PLAIN, 18);
+
+    static final Font SYMBOL_FONT = new Font("Arial Unicode MS", Font.BOLD, 30);
+    static final Color BOARD_BACKGROUND_COLOR = new Color(211, 211, 211);
+    static final Color LAST_MOVE_COLOR = new Color(255, 250, 205);
 
 
     public static JFrame gameFrame;
@@ -81,6 +84,7 @@ public class BoardGUI {
                 int row = i, col =j;
                 displayBoard[i][j] = new JButton();
                 displayBoard[i][j].setFont(SYMBOL_FONT);
+                displayBoard[i][j].setBackground(BOARD_BACKGROUND_COLOR);
                 displayBoard[i][j].setPreferredSize(new Dimension(100, 100));
                 displayBoard[i][j].addActionListener(e-> handleClick(row, col));
                 boardPanel.add(displayBoard[i][j]);
@@ -127,9 +131,11 @@ public class BoardGUI {
             char currentPlayer = playerList[playerNumber];
 
             int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer);
-
             int row = botMove[0], col = botMove[1];
+
             displayBoard[row][col].setText(""+currentPlayer);
+            updateDisplayBoard();
+            displayBoard[row][col].setBackground(LAST_MOVE_COLOR);
 
             if(Functions.checkWinner(actualBoard, winCondition, currentPlayer, row, col)){
                 String message = "Player " + (playerNumber+1) + ": '" + currentPlayer+"' WON THE GAME";
@@ -139,6 +145,7 @@ public class BoardGUI {
                 JOptionPane.showMessageDialog(gameFrame, "GAME IS DRAW");
                 gameEnd = true;
             }
+
             playerNumber = (playerNumber+1)%noOfPlayers;
             lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
         } else return;
@@ -150,7 +157,11 @@ public class BoardGUI {
 
         char currentPlayer = playerList[playerNumber];
         if (Functions.makeMove(actualBoard, boardHistory, currentPlayer, row, col)){
+
             displayBoard[row][col].setText(""+currentPlayer);
+            updateDisplayBoard();
+            displayBoard[row][col].setBackground(LAST_MOVE_COLOR);
+
             if(Functions.checkWinner(actualBoard, winCondition, currentPlayer, row, col)){
                 String message = "Player " + (playerNumber+1) + ": '" + currentPlayer+"' WON THE GAME";
                 JOptionPane.showMessageDialog(gameFrame, message);
@@ -162,6 +173,7 @@ public class BoardGUI {
 
             playerNumber = (playerNumber+1)% noOfPlayers;
             lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
+
             if (!gameEnd) makeBotTurn();
 
         }
@@ -212,6 +224,7 @@ public class BoardGUI {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 displayBoard[i][j].setText("" + actualBoard[i][j]);
+                displayBoard[i][j].setBackground(BOARD_BACKGROUND_COLOR);
             }
         }
     }
