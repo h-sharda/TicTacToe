@@ -3,8 +3,6 @@ import java.util.Stack;
 
 public class Bot {
 
-    static char symbol;
-
     static Random random = new Random();
 
     public static int[] makeMove(char[][] board, Stack<char[][]> st, char botSymbol){
@@ -20,9 +18,5 @@ public class Bot {
         }
 
         return new int[] {row,col};
-    }
-
-    public static void makeRandomMoves(){
-
     }
 }
