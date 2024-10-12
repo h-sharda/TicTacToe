@@ -130,7 +130,7 @@ public class BoardGUI {
         if (playerTypes[playerNumber] == 'C') {
             char currentPlayer = playerList[playerNumber];
 
-            int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer);
+            int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winCondition, noOfPlayers, playerList);
             int row = botMove[0], col = botMove[1];
 
             displayBoard[row][col].setText(""+currentPlayer);

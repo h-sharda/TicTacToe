@@ -8,11 +8,11 @@ public class Main {
     public static final char[] DEFAULT_PLAYER_LIST = {'✖', '◯', '△','☐', '◇'};
     public static final char[] DEFAULT_PLAYER_TYPES = {'H', 'H', 'H', 'H', 'H'};
 
-    public static int boardSize = 3;
-    public static int winCondition = 3;
-    public static int noOfPlayers = 2;
+    public static int boardSize = 8;
+    public static int winCondition = 4;
+    public static int noOfPlayers = 4;
     public static char[] playerList = {'✖', '◯', '△','☐', '◇'};
-    public static char[] playerTypes = {'H', 'H', 'H', 'H', 'H'};
+    public static char[] playerTypes = {'H', 'H', 'H', 'C', 'H'};
 
 
     public static void main(String[] args) {
