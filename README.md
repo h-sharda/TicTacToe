@@ -58,6 +58,8 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 
 - The project was developed using **JDK 17**, but should work with other JDK versions as well.
 - Feel free to modify the source code to increase limits for the number of players, board size, or other features.
+- Next Updates:
+    - Adding different difficulty levels to the bot (the code is already there just need to split it in the Menu).
 
 ---
 
@@ -70,5 +72,9 @@ Yeahhh... do anything with it, you got my permission.
 ### 🎉 Enjoy the Game!
 
 Have fun customizing and playing **Tic-Tac-Toe** with your friends, or challenge the bot to see who the ultimate Tic-Tac-Toe champion is specially in those bigger boards!
+
+**Challenge:** We all know that a classic game of TicTacToe is obviously a draw when played perfectly, so try beating the bot in any of these scenarios:
+  - Board Size: 5/6, Win Condition: 4
+  - Board Size: 7/8, Win Condition: 4 with 2 bots
 
 ---
