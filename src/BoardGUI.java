@@ -201,7 +201,7 @@ public class BoardGUI {
             updateDisplayBoard();
             return;
         }
-
+        System.out.println("Undoing the last human move");
         // Now the board state is at the last human move
         Functions.undoMove(actualBoard, boardHistory);
         playerNumber = prevPlayer;
@@ -213,6 +213,7 @@ public class BoardGUI {
 
     public static void handleReset(){
         Functions.resetBoard(actualBoard, boardHistory);
+        System.out.println("Resetting the board");
         playerNumber = 0;
         gameEnd = false;
         lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
