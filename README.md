@@ -6,7 +6,7 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 
 ### 🎮 How to Play
 
-1. **Download** : [TicTacToe.jar](./TicTacToe.jar)
+1. **Download** : [TicTacToe.jar]()
 2. **Run the file** by simply double-clicking it
    - *(Ensure you have a compatible **Java JDK/JRE** installed.)*
    - *(Although the project was developed using **JDK 17**, it should work with other versions as well.)*
@@ -45,7 +45,7 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 
 ### 📦 Installation
 
-1. Download the latest version of [TicTacToe.jar](./TicTacToe.jar)
+1. Download the latest version of [TicTacToe.jar]()
 2. Ensure you have **Java JDK/JRE** installed. You can check your Java installation by running:
    ```bash
    java -version
