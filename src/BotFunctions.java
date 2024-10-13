@@ -268,7 +268,7 @@ public class BotFunctions {
         board[row][col] = botSymbol;
     }
 
-    public static boolean specialCase(char[][] board, char botSymbol, char nextPlayer,int winSequence, int playerNumber){
+    public static boolean specialCase(char[][] board, char botSymbol, char nextPlayer, int playerNumber){
         int n = board.length;
         if (n != 3 || playerNumber != 1) return false;
         int filledChars = 0;

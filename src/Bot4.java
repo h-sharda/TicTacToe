@@ -26,7 +26,7 @@ public class Bot4 extends BotFunctions {
         }
 
         char nextPlayer = playerList[(playerNumber + 1) % noOfPlayers ];
-        if (specialCase(board, botSymbol, nextPlayer, winSequence, playerNumber)){
+        if (specialCase(board, botSymbol, nextPlayer, playerNumber)){
             System.out.println("Bot 4: Yeah opponent is doing that trick");
             st.push(Functions.makeBoardCopy(board));
             return new int[] {row, col};
