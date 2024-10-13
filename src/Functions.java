@@ -2,19 +2,17 @@ import java.util.Stack;
 
 public class Functions {
 
-    // FOR A DEEP COPY OF THE BOARD
+    // MAKES A DEEP COPY OF THE BOARD
     public static char[][] makeBoardCopy (char[][] board){
         int n = board.length;
         char[][] copy = new char[n][n];
-
         for (int i = 0; i < n; i++) {
             System.arraycopy(board[i], 0, copy[i], 0, n);
         }
-
         return copy;
     }
 
-    // INITIALIZE BOARD
+    // INITIALIZES BOARD
     public static void initializeBoard (char[][] board, Stack<char[][]> st){
         int n = board.length;
         for (int i = 0; i < n; i++) {
@@ -25,7 +23,7 @@ public class Functions {
         st.push(makeBoardCopy(board));
     }
 
-    // MAKES MOVE
+    // MAKES VALID MOVES
     public static boolean makeMove(char[][] board, Stack<char[][]> st, char player, int row, int col){
         if (board[row][col] != ' ') return false;
 
@@ -34,39 +32,38 @@ public class Functions {
         return true;
     }
 
-    // CHECKS WINNER
-    public static boolean checkWinner(char[][] board, int winCondition, char player, int row, int col ){
+    // CHECKS IF THE MOVE MADE WINS THE GAME
+    public static boolean checkWinner(char[][] board, int winSequence, char player, int row, int col ){
         int n = board.length;
-        
-        int rowStart = Math.max(row - winCondition + 1, 0), rowEnd = Math.min(row + winCondition - 1, n-1);
-        int colStart = Math.max(col - winCondition + 1, 0), colEnd = Math.min(col + winCondition - 1, n-1);
-        
-        // VERTICAL CHECK
         int len = 0;
-        for (int i = rowStart ; i<= rowEnd; i++) {
+
+        // VERTICAL CHECK
+        for (int i = row - winSequence + 1; i<= row + winSequence - 1; i++) {
+            if ( i < 0 ) i = 0;
+            if ( i >= n) break;
             len = board[i][col] == player ? len+1 : 0;
-            if (len == winCondition) return true;
+            if (len == winSequence) return true;
         }
-        
         // HORIZONTAL CHECK
         len = 0;
-        for (int i = colStart ; i<= colEnd; i++) {
+        for (int i = col - winSequence + 1; i<= col + winSequence - 1; i++) {
+            if ( i < 0 ) i = 0;
+            if ( i >= n) break;
             len = board[row][i] == player ? len+1 : 0;
-            if (len == winCondition) return true;
+            if (len == winSequence) return true;
         }
-        
-        // DIAGONAL CHECK
+        // DIAGONAL CHECKS
         len = 0;
-        for (int i = 1-winCondition; i <= winCondition-1; i++) {
+        for (int i = 1- winSequence; i <= winSequence -1; i++) {
             if ( (row + i < 0) || (row + i >= n) || (col + i < 0) || (col + i >= n) ) continue;
             len = board[row+i][col+i] == player ? len+1 : 0;
-            if (len == winCondition) return true;
+            if (len == winSequence) return true;
         }
         len = 0;
-        for (int i = 1-winCondition; i <= winCondition-1; i++) {
+        for (int i = 1- winSequence; i <= winSequence -1; i++) {
             if ( (row - i < 0) || (row - i >= n) || (col + i < 0) || (col + i >= n) ) continue;
             len = board[row-i][col+i] == player ? len+1 : 0;
-            if (len == winCondition) return true;
+            if (len == winSequence) return true;
         }
 
         return false;

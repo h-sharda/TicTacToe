@@ -48,9 +48,14 @@ public class Bot {
             return new int[] {row, col};
         }
 
-        makeInformedRandomMove(board, botSymbol);
+        if (makeInformedMove(board, botSymbol)){
+            System.out.println("Making informed move near other pieces and towards center");
+            st.push(Functions.makeBoardCopy(board));
+            return new int[] {row, col};
+        }
 
-        System.out.println("Moving randomly (informed random)");
+        makeTrueRandomMove(board, botSymbol);
+        System.out.println("Moving randomly");
         st.push(Functions.makeBoardCopy(board));
 
         return new int[] {row,col};
@@ -252,14 +257,14 @@ public class Bot {
         return false;
     }
 
-    public static void makeInformedRandomMove(char[][] board, char botSymbol){
+    public static boolean makeInformedMove(char[][] board, char botSymbol){
         int n = board.length;
 
         if (board[n/2][n/2] == ' ') {
             row = n/2;
             col = n/2;
             board[n/2][n/2] = botSymbol;
-            return;
+            return true;
         }
 
         for (int i = 0; i < n; i++) {
@@ -271,7 +276,7 @@ public class Bot {
                             row = i+1;
                             col = j+1;
                             board[row][col] = botSymbol;
-                            return;
+                            return true;
                         }
                     } else if ( i >= n/2 && j < n/2){
                         if (board[i-1][j+1] == ' ') {
@@ -279,7 +284,7 @@ public class Bot {
                             row = i-1;
                             col = j+1;
                             board[row][col] = botSymbol;
-                            return;
+                            return true;
                         }
                     } else if ( i < n/2 && j >= n/2){
                         if (board[i+1][j-1] == ' ') {
@@ -287,7 +292,7 @@ public class Bot {
                             row = i+1;
                             col = j-1;
                             board[row][col] = botSymbol;
-                            return;
+                            return true;
                         }
                     } else {
                         if (board[i-1][j-1] == ' ') {
@@ -295,13 +300,18 @@ public class Bot {
                             row = i-1;
                             col = j-1;
                             board[row][col] = botSymbol;
-                            return;
+                            return true;
                         }
                     }
                 }
             }
         }
 
+        return false;
+    }
+
+    public static void makeTrueRandomMove(char[][] board, char botSymbol){
+        int n = board.length;
         ArrayList<Integer> emptyCells = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -318,7 +328,6 @@ public class Bot {
         col = randPos%n;
         System.out.println(board[row][col]);
         board[row][col] = botSymbol;
-
     }
 
 }

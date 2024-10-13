@@ -4,45 +4,39 @@ import java.util.Stack;
 
 public class BoardGUI {
 
-    // FONTS AND COLORS CONSTANTS
-    static final Color BACKGROUND_COLOR = new Color(220, 220, 220);
+    // DECLARING BOARD AND PLAYER CONFIGURATIONS
+    private static int boardSize;
+    private static int winSequence;
+    private static int noOfPlayers;
+    private static char[] playerList;
+    private static char[] playerTypes;
 
-    static final Font LABEL_FONT = new Font("Arial Unicode MS", Font.PLAIN, 20);
+    private static int playerNumber;
+    private static boolean gameEnd;
 
-    static final Color BUTTON_COLOR = new Color(200,200,255);
-    static final Font BUTTON_FONT = new Font("Arial Unicode MS", Font.PLAIN, 18);
-
-    static final Font SYMBOL_FONT = new Font("Arial Unicode MS", Font.BOLD, 30);
-    static final Color BOARD_BACKGROUND_COLOR = new Color(211, 211, 211);
-    static final Color LAST_MOVE_COLOR = new Color(255, 250, 205);
+    static char[][] actualBoard;
+    static Stack<char[][]> boardHistory;
 
 
-    public static JFrame gameFrame;
-
-    static int boardSize;
-    static int winCondition;
-    static int noOfPlayers;
-    static char[] playerList;
-    static char[] playerTypes;
-
-    static int playerNumber;
-    static boolean gameEnd;
-
-    public static char[][] actualBoard;
-    public static Stack<char[][]> boardHistory;
+    // DECLARING GAME SCREEN COMPONENTS
+    static JFrame gameFrame;
+    static JLabel lblDisplayCurrentPlayer;
 
     static JPanel boardPanel;
     static JButton[][] displayBoard;
-    static JLabel lblDisplayCurrentPlayer;
+
     static JPanel controlPanel;
     static JButton btnUndo;
     static JButton btnReset = new JButton("RESET");
     static JButton btnMainMenu = new JButton("MAIN MENU");
 
 
+    // MAIN RUNNER FOR THE GAME SCREEN
     public static void main(String[] args) {
+
+        // INITIALIZING BOARD AND PLAYER CONFIGURATIONS
         boardSize = Main.boardSize;
-        winCondition = Main.winCondition;
+        winSequence = Main.winSequence;
         noOfPlayers = Main.noOfPlayers;
 
         playerList = new char[noOfPlayers];
@@ -55,10 +49,12 @@ public class BoardGUI {
         actualBoard = new char[boardSize][boardSize];
         boardHistory = new Stack<>();
 
+        // RESETTING THE FRAME DYNAMICALLY
         if (gameFrame != null) gameFrame.dispose();
         gameFrame = new JFrame("Game Menu");
 
-        gameFrame.getContentPane().setBackground(BACKGROUND_COLOR);
+        // SETTING UP THE GAME SCREEN
+        gameFrame.getContentPane().setBackground(Main.BACKGROUND_COLOR);
         gameFrame.setSize(boardSize * 75, boardSize * 75 + 80);
         gameFrame.setMinimumSize(new Dimension(500,500));
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,25 +62,26 @@ public class BoardGUI {
         gameFrame.setLayout(new BorderLayout());
 
         Functions.initializeBoard(actualBoard, boardHistory);
-
         playerNumber = 0;
         gameEnd = false;
 
         // ADDING WELCOME HEADER MESSAGE
-        lblDisplayCurrentPlayer = new JLabel(playerList[playerNumber] +"'s TURN", SwingConstants.CENTER);
-        lblDisplayCurrentPlayer.setFont(LABEL_FONT);
+        String displayCurrentPlayerText = "<html>"+playerList[playerNumber] +"'s TURN</html>";
+        lblDisplayCurrentPlayer = new JLabel(displayCurrentPlayerText, SwingConstants.CENTER);
+        lblDisplayCurrentPlayer.setFont(Main.HEADER_FONT);
         lblDisplayCurrentPlayer.setPreferredSize(new Dimension(boardSize * 75, 40));
         gameFrame.add(lblDisplayCurrentPlayer, "North");
 
         boardPanel = new JPanel(new GridLayout(boardSize, boardSize));
         displayBoard = new JButton[boardSize][boardSize];
 
+        // INITIALIZING THE DISPLAY BOARD
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 int row = i, col =j;
                 displayBoard[i][j] = new JButton();
-                displayBoard[i][j].setFont(SYMBOL_FONT);
-                displayBoard[i][j].setBackground(BOARD_BACKGROUND_COLOR);
+                displayBoard[i][j].setFont(Main.SYMBOL_FONT);
+                displayBoard[i][j].setBackground(Main.BOARD_BACKGROUND_COLOR);
                 displayBoard[i][j].setPreferredSize(new Dimension(100, 100));
                 displayBoard[i][j].addActionListener(e-> handleClick(row, col));
                 boardPanel.add(displayBoard[i][j]);
@@ -93,51 +90,67 @@ public class BoardGUI {
         boardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         gameFrame.add(boardPanel, "Center");
 
+        // INITIALIZING CONTROL PANEL
         controlPanel = new JPanel(new BorderLayout(5,0));
 
         btnMainMenu = new JButton("MAIN MENU");
-        btnMainMenu.setFont(BUTTON_FONT);
-        btnMainMenu.setBackground(BUTTON_COLOR);
-        btnMainMenu.setPreferredSize(new Dimension(150, 40));
+        btnMainMenu.setFont(Main.BUTTON_FONT);
+        btnMainMenu.setBackground(Main.BUTTON_COLOR);
+        btnMainMenu.setPreferredSize(new Dimension(165, 40));
         btnMainMenu.addActionListener(e-> handleMainMenu());
         btnMainMenu.setToolTipText("Takes you back to Main Menu");
         controlPanel.add(btnMainMenu, "West");
 
         btnUndo = new JButton("UNDO");
-        btnUndo.setFont(BUTTON_FONT);
-        btnUndo.setBackground(BUTTON_COLOR);
-        btnUndo.setPreferredSize(new Dimension(150, 40));
+        btnUndo.setFont(Main.BUTTON_FONT);
+        btnUndo.setBackground(Main.BUTTON_COLOR);
+        btnUndo.setPreferredSize(new Dimension(165, 40));
         btnUndo.addActionListener(e-> handleUndo());
         btnUndo.setToolTipText("Undoes the last human move made");
         controlPanel.add(btnUndo, "Center");
 
         btnReset = new JButton("RESET");
-        btnReset.setFont(BUTTON_FONT);
-        btnReset.setBackground(BUTTON_COLOR);
-        btnReset.setPreferredSize(new Dimension(150, 40));
+        btnReset.setFont(Main.BUTTON_FONT);
+        btnReset.setBackground(Main.BUTTON_COLOR);
+        btnReset.setPreferredSize(new Dimension(165, 40));
         btnReset.addActionListener(e-> handleReset());
         btnReset.setToolTipText("Reset the board entirely");
         controlPanel.add(btnReset, "East");
 
         gameFrame.add(controlPanel, "South");
 
-        makeBotTurn();
-
+        // DISPLAYING THE FRAME
         gameFrame.setVisible(true);
+
+        // MAKING THE BOT MOVE IF ITS BOT MOVE IN STARTING
+        makeBotTurn();
     }
 
-    public static void makeBotTurn() {
+
+    // UPDATES THE DISPLAY BOARD AFTER EVERY MOVE
+    private static void updateDisplayBoard(){
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                displayBoard[i][j].setText("" + actualBoard[i][j]);
+                displayBoard[i][j].setBackground(Main.BOARD_BACKGROUND_COLOR);
+            }
+        }
+    }
+
+
+    // HANDLES THE BOT MOVES
+    private static void makeBotTurn() {
         if (playerTypes[playerNumber] == 'C') {
             char currentPlayer = playerList[playerNumber];
 
-            int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winCondition, noOfPlayers, playerList);
+            int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
             int row = botMove[0], col = botMove[1];
 
             displayBoard[row][col].setText(""+currentPlayer);
             updateDisplayBoard();
-            displayBoard[row][col].setBackground(LAST_MOVE_COLOR);
+            displayBoard[row][col].setBackground(Main.LAST_MOVE_COLOR);
 
-            if(Functions.checkWinner(actualBoard, winCondition, currentPlayer, row, col)){
+            if(Functions.checkWinner(actualBoard, winSequence, currentPlayer, row, col)){
                 String message = "Player " + (playerNumber+1) + ": '" + currentPlayer+"' WON THE GAME";
                 JOptionPane.showMessageDialog(gameFrame, message);
                 gameEnd = true;
@@ -147,86 +160,83 @@ public class BoardGUI {
             }
 
             playerNumber = (playerNumber+1)%noOfPlayers;
-            lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
+            lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
         } else return;
 
         if (!gameEnd) makeBotTurn();
     }
 
-    public static void handleClick(int row, int col){
+    // HANDLE HUMAN MOVES
+    private static void handleClick(int row, int col){
 
         char currentPlayer = playerList[playerNumber];
         if (Functions.makeMove(actualBoard, boardHistory, currentPlayer, row, col)){
-
             displayBoard[row][col].setText(""+currentPlayer);
             updateDisplayBoard();
-            displayBoard[row][col].setBackground(LAST_MOVE_COLOR);
+            displayBoard[row][col].setBackground(Main.LAST_MOVE_COLOR);
 
-            if(Functions.checkWinner(actualBoard, winCondition, currentPlayer, row, col)){
-                String message = "Player " + (playerNumber+1) + ": '" + currentPlayer+"' WON THE GAME";
-                JOptionPane.showMessageDialog(gameFrame, message);
+            if(Functions.checkWinner(actualBoard, winSequence, currentPlayer, row, col)){
+                JLabel label = new JLabel("", SwingConstants.CENTER);
+                String message = "<html>Player " + (playerNumber+1) + ": '" + currentPlayer+"' WON THE GAME</html>";
+                label.setText(message);
+                label.setFont(Main.JOPTIONPANE_FONT);
+                JOptionPane.showMessageDialog(gameFrame, label, "Game Over", JOptionPane.PLAIN_MESSAGE);
                 gameEnd = true;
             } else if (Functions.isBoardFull(actualBoard)){
-                JOptionPane.showMessageDialog(gameFrame, "GAME IS DRAW");
+                JLabel label = new JLabel("", SwingConstants.CENTER);
+                String message = "GAME IS DRAW";
+                label.setText(message);
+                label.setFont(Main.JOPTIONPANE_FONT);
+                JOptionPane.showMessageDialog(gameFrame, label, "Game Over", JOptionPane.PLAIN_MESSAGE);
                 gameEnd = true;
             }
 
             playerNumber = (playerNumber+1)% noOfPlayers;
-            lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
+            lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
 
             if (!gameEnd) makeBotTurn();
 
         }
     }
 
-    public static void handleMainMenu(){
+
+    // BUTTON ACTION LISTENERS
+    private static void handleMainMenu(){
         Main.gameMenu_to_mainMenu();
     }
 
-    public static void handleUndo(){
+    private static void handleUndo(){
 
         if (boardHistory.size() <= 1) return;
 
         int prevPlayer = (playerNumber - 1 + noOfPlayers) % noOfPlayers;
         while (playerTypes[prevPlayer] == 'C') {
-            if(boardHistory.size() <= 1) break;
+            if(boardHistory.size() <= 1) {
+                handleReset();
+                return;
+            }
             Functions.undoMove(actualBoard, boardHistory);
             prevPlayer = (prevPlayer - 1 + noOfPlayers) % noOfPlayers;
         }
 
-        // If the starting players where bots and the board is reset to initial state
-        if(boardHistory.size() <= 1) {
-            playerNumber = 0;
-            makeBotTurn(); // this will only make initial moves if starting players are bot
-            updateDisplayBoard();
-            return;
-        }
-        System.out.println("Undoing the last human move");
         // Now the board state is at the last human move
+        System.out.println("Undoing the last human move");
         Functions.undoMove(actualBoard, boardHistory);
         playerNumber = prevPlayer;
         gameEnd = false;
 
-        lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
+        lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
         updateDisplayBoard();
     }
 
-    public static void handleReset(){
+    private static void handleReset(){
         Functions.resetBoard(actualBoard, boardHistory);
         System.out.println("Resetting the board");
         playerNumber = 0;
         gameEnd = false;
-        lblDisplayCurrentPlayer.setText(playerList[playerNumber] +"'s TURN");
+        lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
         makeBotTurn();
         updateDisplayBoard();
     }
 
-    public static void updateDisplayBoard(){
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                displayBoard[i][j].setText("" + actualBoard[i][j]);
-                displayBoard[i][j].setBackground(BOARD_BACKGROUND_COLOR);
-            }
-        }
-    }
 }

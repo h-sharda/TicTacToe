@@ -5,69 +5,61 @@ import java.util.HashSet;
 
 public class InputPlayers {
 
-    static int noOfPlayer;
+    // DECLARING NUMBER OF PLAYERS
+    private static int noOfPlayer;
 
-    // FONTS AND COLORS CONSTANTS
-    static final Color BACKGROUND_COLOR = new Color(220, 220, 220);
 
-    static final Font DEFAULT_FONT = new Font("Arial Unicode MS", Font.PLAIN, 16);
-    static final Font SYMBOL_FONT = new Font("Arial Unicode MS", Font.BOLD, 20);
+    // DECLARING PLAYER INPUT MENU COMPONENTS
+    static JFrame playerInputFrame;
+    static JLabel lblHeaderMessage;
 
-    static final Color WELCOME_MESSAGE_COLOR = new Color(60, 60, 60);
-    static final Font WELCOME_MESSAGE_FONT = new Font("Arial Unicode MS", Font.BOLD, 25);
+    static ArrayList<JLabel> lblPlayersList;
+    static ArrayList<JTextField> txtPlayerSymbolsList;
+    static ArrayList<JComboBox<String>> cmbPlayerTypesList;
 
-    static final Color BUTTON_COLOR = new Color(200,200,255);
-    static final Font BUTTON_FONT = new Font("Arial Unicode MS", Font.BOLD, 20);
+    static JButton btnStart;
+    static JButton btnBack;
+    static JButton btnResetSymbols;
 
-    // INITIALIZING PLAYER INPUT MENU COMPONENTS
-    public static JFrame playerInputFrame;
-    public static ArrayList<JLabel> lblPlayers;
-    public static ArrayList<JTextField> txtPlayerSymbols;
-    public static ArrayList<JComboBox<String>> cmbPlayerTypes;
-    public static JLabel lblWelcomeMessage;
-    public static JButton btnStart;
-    public static JButton btnBack;
-    public static JButton btnResetSymbols;
 
-    // COMMENT
+    // MAIN RUNNER FOR THE PLAYER INPUT MENU
     public static void main(String[] args) {
 
         noOfPlayer = Main.noOfPlayers;
 
-        // RESETTING THE LISTS TO PREVENT ERROR CAUSED BY BACK AND FORTH MOVEMENT
+        // RESETTING THE LISTS TO PREVENT ANY ERROR CAUSED BY BACK AND FORTH MOVEMENT
         for (int i=0; i< noOfPlayer; i++){
             Main.playerList[i] = Main.DEFAULT_PLAYER_LIST[i];
             Main.playerTypes[i] = Main.DEFAULT_PLAYER_TYPES[i];
         }
 
-        // RESETTING THE FRAME DYNAMICALLY EVERY TIME
+        // RESETTING THE FRAME DYNAMICALLY
         if(playerInputFrame != null) playerInputFrame.dispose();
         playerInputFrame = new JFrame("Player Input Menu");
 
-        // SETTING UP THE MENU
-        playerInputFrame.getContentPane().setBackground(BACKGROUND_COLOR);
-        playerInputFrame.setSize(720, 480);
+        // SETTING UP THE PLAYER INPUT MENU
+        playerInputFrame.getContentPane().setBackground(Main.BACKGROUND_COLOR);
+        playerInputFrame.setSize(720, 520);
         playerInputFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playerInputFrame.setLocationRelativeTo(null);
         playerInputFrame.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10,10,10,10);
-
-        // ADDING WELCOME HEADER MESSAGE
-        lblWelcomeMessage = new JLabel("Customize Players");
         gbc.anchor = GridBagConstraints.CENTER;
+
+        // ADDING HEADER MESSAGE
         gbc.gridwidth = 3;
         gbc.gridy = 0;
         gbc.gridx = 0;
-        lblWelcomeMessage.setFont(WELCOME_MESSAGE_FONT);
-        lblWelcomeMessage.setForeground(WELCOME_MESSAGE_COLOR);
-        playerInputFrame.add(lblWelcomeMessage, gbc);
+        lblHeaderMessage = new JLabel("<html>Customize Players<br<br></html>");
+        lblHeaderMessage.setFont(Main.HEADER_FONT);
+        playerInputFrame.add(lblHeaderMessage, gbc);
 
         // DYNAMICALLY ADDING THE PLAYER INPUT OPTION
-        lblPlayers = new ArrayList<>();
-        txtPlayerSymbols = new ArrayList<>();
-        cmbPlayerTypes = new ArrayList<>();
+        lblPlayersList = new ArrayList<>();
+        txtPlayerSymbolsList = new ArrayList<>();
+        cmbPlayerTypesList = new ArrayList<>();
 
         gbc.gridwidth = 1;
 
@@ -76,25 +68,25 @@ public class InputPlayers {
             gbc.gridy = i+1;
 
             gbc.gridx = 0;
-            lblPlayers.add(new JLabel("Player " + (i+1) + " : "));
-            lblPlayers.get(i).setFont(DEFAULT_FONT);
-            playerInputFrame.add(lblPlayers.get(i), gbc);
+            lblPlayersList.add(new JLabel("Player " + (i+1) + " : "));
+            lblPlayersList.get(i).setFont(Main.DEFAULT_FONT);
+            playerInputFrame.add(lblPlayersList.get(i), gbc);
 
             gbc.gridx =1;
-            txtPlayerSymbols.add(new JTextField(5));
-            txtPlayerSymbols.get(i).setFont(SYMBOL_FONT);
-            txtPlayerSymbols.get(i).setText(""+ Main.playerList[i]);
-            txtPlayerSymbols.get(i).setHorizontalAlignment(JTextField.CENTER);
-            playerInputFrame.add(txtPlayerSymbols.get(i), gbc);
+            txtPlayerSymbolsList.add(new JTextField(5));
+            txtPlayerSymbolsList.get(i).setFont(Main.SYMBOL_FONT);
+            txtPlayerSymbolsList.get(i).setText(""+ Main.playerList[i]);
+            txtPlayerSymbolsList.get(i).setHorizontalAlignment(JTextField.CENTER);
+            playerInputFrame.add(txtPlayerSymbolsList.get(i), gbc);
 
             gbc.gridx = 2;
-            cmbPlayerTypes.add( new JComboBox<>(new String[] {"Human", "Computer"}));
-            cmbPlayerTypes.get(i).addActionListener(e-> {
-                int selection = cmbPlayerTypes.get(playerNo).getSelectedIndex();
+            cmbPlayerTypesList.add( new JComboBox<>(new String[] {"Human", "Computer"}));
+            cmbPlayerTypesList.get(i).addActionListener(e-> {
+                int selection = cmbPlayerTypesList.get(playerNo).getSelectedIndex();
                 Main.playerTypes[playerNo] = selection == 0? 'H': 'C';
             });
-            cmbPlayerTypes.get(i).setFont(DEFAULT_FONT);
-            playerInputFrame.add(cmbPlayerTypes.get(i), gbc);
+            cmbPlayerTypesList.get(i).setFont(Main.DEFAULT_FONT);
+            playerInputFrame.add(cmbPlayerTypesList.get(i), gbc);
         }
 
         // ADDING NAVIGATION BUTTONS
@@ -103,8 +95,8 @@ public class InputPlayers {
         // BACK BUTTON TO MAIN MENU
         btnBack = new JButton("BACK");
         gbc.gridx = 0;
-        btnBack.setBackground(BUTTON_COLOR);
-        btnBack.setFont(BUTTON_FONT);
+        btnBack.setBackground(Main.BUTTON_COLOR);
+        btnBack.setFont(Main.BUTTON_FONT);
         btnBack.addActionListener(e-> handleBack());
         btnBack.setToolTipText("Click to go back to Main Menu");
         playerInputFrame.add(btnBack, gbc);
@@ -112,8 +104,8 @@ public class InputPlayers {
         // RESET SYMBOLS BUTTON
         btnResetSymbols = new JButton("RESET");
         gbc.gridx = 1;
-        btnResetSymbols.setBackground(BUTTON_COLOR);
-        btnResetSymbols.setFont(BUTTON_FONT);
+        btnResetSymbols.setBackground(Main.BUTTON_COLOR);
+        btnResetSymbols.setFont(Main.BUTTON_FONT);
         btnResetSymbols.addActionListener(e-> handleReset());
         btnResetSymbols.setToolTipText("Click to view various symbols to use");
         playerInputFrame.add(btnResetSymbols, gbc);
@@ -121,38 +113,46 @@ public class InputPlayers {
         // GAME START BUTTON
         btnStart = new JButton("START");
         gbc.gridx = 2;
-        btnStart.setBackground(BUTTON_COLOR);
-        btnStart.setFont(BUTTON_FONT);
+        btnStart.setBackground(Main.BUTTON_COLOR);
+        btnStart.setFont(Main.BUTTON_FONT);
         btnStart.addActionListener(e-> handleStart() );
         btnStart.setToolTipText("Click to start the game");
         playerInputFrame.add(btnStart, gbc);
 
-        // DISPLAYING THE PANE
+        // DISPLAYING THE FRAME
         playerInputFrame.setVisible(true);
     }
 
-    public static void handleBack(){
+
+    // BUTTON ACTION LISTENERS
+    private static void handleBack(){
         Main.playerInputMenu_to_mainMenu();
     }
 
-    public static void handleReset(){
+    private static void handleReset(){
         for (int i =0; i< noOfPlayer; i++){
-            txtPlayerSymbols.get(i).setText("" + Main.DEFAULT_PLAYER_LIST[i]);
+            txtPlayerSymbolsList.get(i).setText("" + Main.DEFAULT_PLAYER_LIST[i]);
         }
     }
 
-    public static void handleStart(){
+    private static void handleStart(){
         HashSet<Character> set = new HashSet<>();
         for (int i = 0; i < noOfPlayer; i++) {
-            String symbol = txtPlayerSymbols.get(i).getText();
+            String symbol = txtPlayerSymbolsList.get(i).getText();
             if (symbol.length() != 1){
+                JLabel label = new JLabel();
                 String message = "All symbols must be a single character";
-                JOptionPane.showMessageDialog(playerInputFrame, message);
+                label.setText(message);
+                label.setFont(Main.JOPTIONPANE_FONT);
+                JOptionPane.showMessageDialog(playerInputFrame, label, "Input Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (!set.add(symbol.charAt(0))) {
+                JLabel label = new JLabel();
                 String message = "All symbols must be unique to a player";
-                JOptionPane.showMessageDialog(playerInputFrame, message);
+                label.setText(message);
+                label.setFont(Main.JOPTIONPANE_FONT);
+                JOptionPane.showMessageDialog(playerInputFrame, label, "Input Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             Main.playerList[i] = symbol.charAt(0);
