@@ -6,7 +6,7 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 
 ### 🎮 How to Play
 
-1. **Download** : [TicTacToe.jar]()
+1. **Download** : [TicTacToe.jar](./TicTacToe.jar)
 2. **Run the file** by simply double-clicking it
    - *(Ensure you have a compatible **Java JDK/JRE** installed.)*
    - *(Although the project was developed using **JDK 17**, it should work with other versions as well.)*
@@ -14,6 +14,9 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 ---
 
 ### ✨ Features
+- **Bot with Multiple Difficulty Levels**  
+  - The game features a bot with **5 different difficulty levels**, ranging from beginner to expert. 
+  - As the difficulty increases, the bot becomes more strategic, analyzing potential forks, double forks, and advanced winning scenarios.
 
 - **Variable Game Configurations**  
   - Variable board size (3-10)
@@ -28,12 +31,12 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
   - All human players, or any combination of your choice!
  
 - **Interactive Menu Screens**  
-  Customize the game settings, including:
-  - Number of players
-  - Board size
-  - Player symbols
-  - Player types (human or bot)  
-    **Tooltips** and **Help Dialogues** are available for guidance on each option.
+  - Customize the game settings, including:
+    - Number of players
+    - Board size
+    - Player symbols
+    - Player types (human and 5 bots with increasing difficulty)  
+  - **Tooltips** and **Help Dialogues** are available for guidance on each option.
 
 - **Undo & Reset Options**  
   Made a mistake? Use the **Undo** button to take back moves, even in bot-human mixed games. You can also start fresh anytime with the **Reset** button.
@@ -42,7 +45,7 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 
 ### 📦 Installation
 
-1. Download the latest version of [TicTacToe.jar]()
+1. Download the latest version of [TicTacToe.jar](./TicTacToe.jar)
 2. Ensure you have **Java JDK/JRE** installed. You can check your Java installation by running:
    ```bash
    java -version
@@ -57,9 +60,6 @@ This is a customizable **Tic-Tac-Toe** simulator built in Java using Swing. Play
 ### 🛠️ Development
 
 - The project was developed using **JDK 17**, but should work with other JDK versions as well.
-- Feel free to modify the source code to increase limits for the number of players, board size, or other features.
-- Next Updates:
-    - Adding different difficulty levels to the bot (the code is already there just need to split it in the Menu).
 
 ---
 
