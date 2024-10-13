@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class InputPlayers {
 
     // DECLARING NUMBER OF PLAYERS
-    private static int noOfPlayer;
+    private static int noOfPlayers;
 
 
     // DECLARING PLAYER INPUT MENU COMPONENTS
@@ -25,10 +25,10 @@ public class InputPlayers {
     // MAIN RUNNER FOR THE PLAYER INPUT MENU
     public static void main(String[] args) {
 
-        noOfPlayer = Main.noOfPlayers;
+        noOfPlayers = Main.noOfPlayers;
 
         // RESETTING THE LISTS TO PREVENT ANY ERROR CAUSED BY BACK AND FORTH MOVEMENT
-        for (int i=0; i< noOfPlayer; i++){
+        for (int i = 0; i< noOfPlayers; i++){
             Main.playerList[i] = Main.DEFAULT_PLAYER_LIST[i];
             Main.playerTypes[i] = Main.DEFAULT_PLAYER_TYPES[i];
         }
@@ -63,7 +63,7 @@ public class InputPlayers {
 
         gbc.gridwidth = 1;
 
-        for (int i = 0; i < noOfPlayer; i++) {
+        for (int i = 0; i < noOfPlayers; i++) {
             int playerNo = i;
             gbc.gridy = i+1;
 
@@ -80,17 +80,15 @@ public class InputPlayers {
             playerInputFrame.add(txtPlayerSymbolsList.get(i), gbc);
 
             gbc.gridx = 2;
-            cmbPlayerTypesList.add( new JComboBox<>(new String[] {"Human", "Computer"}));
-            cmbPlayerTypesList.get(i).addActionListener(e-> {
-                int selection = cmbPlayerTypesList.get(playerNo).getSelectedIndex();
-                Main.playerTypes[playerNo] = selection == 0? 'H': 'C';
-            });
+            String[] playerTypeOptions = new String[] {"Human", "Computer 1", "Computer 2", "Computer 3", "Computer 4", "Computer 5"};
+            cmbPlayerTypesList.add( new JComboBox<>(playerTypeOptions));
+            cmbPlayerTypesList.get(i).addActionListener(e-> handlePlayerType(playerNo));
             cmbPlayerTypesList.get(i).setFont(Main.DEFAULT_FONT);
             playerInputFrame.add(cmbPlayerTypesList.get(i), gbc);
         }
 
         // ADDING NAVIGATION BUTTONS
-        gbc.gridy = noOfPlayer+1;
+        gbc.gridy = noOfPlayers +1;
 
         // BACK BUTTON TO MAIN MENU
         btnBack = new JButton("BACK");
@@ -124,20 +122,33 @@ public class InputPlayers {
     }
 
 
+    // HANDLE TYPE OF PLAYERS
+    private static void handlePlayerType(int playerNo){
+        int selection = cmbPlayerTypesList.get(playerNo).getSelectedIndex();
+
+        if (selection == 0) Main.playerTypes[playerNo] = 'H';
+        else if (selection == 1) Main.playerTypes[playerNo] = '1';
+        else if (selection == 2) Main.playerTypes[playerNo] = '2';
+        else if (selection == 3) Main.playerTypes[playerNo] = '3';
+        else if (selection == 4) Main.playerTypes[playerNo] = '4';
+        else Main.playerTypes[playerNo] = '5';
+    }
+
+
     // BUTTON ACTION LISTENERS
     private static void handleBack(){
         Main.playerInputMenu_to_mainMenu();
     }
 
     private static void handleReset(){
-        for (int i =0; i< noOfPlayer; i++){
+        for (int i = 0; i< noOfPlayers; i++){
             txtPlayerSymbolsList.get(i).setText("" + Main.DEFAULT_PLAYER_LIST[i]);
         }
     }
 
     private static void handleStart(){
         HashSet<Character> set = new HashSet<>();
-        for (int i = 0; i < noOfPlayer; i++) {
+        for (int i = 0; i < noOfPlayers; i++) {
             String symbol = txtPlayerSymbolsList.get(i).getText();
             if (symbol.length() != 1){
                 JLabel label = new JLabel();

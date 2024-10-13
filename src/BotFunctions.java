@@ -1,73 +1,19 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
 
-public class Bot {
+public class BotFunctions {
 
     static Random random = new Random();
 
-    private static int row, col;
+    static int row, col;
 
-    public static int[] makeMove(char[][] board, Stack<char[][]> st, char botSymbol, int playerNumber, int winCondition, int noOfPlayers, char [] playerList){
-
-        char nextPlayer = playerList[(playerNumber + 1) % noOfPlayers ];
-
-        if (canBotWin(board, botSymbol, winCondition)) {
-            System.out.println("can win");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (canOtherPlayersWin(board, botSymbol, playerNumber, winCondition, noOfPlayers, playerList)) {
-            System.out.println("other is winning");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (canFork(board, botSymbol, winCondition)) {
-            System.out.println("can fork");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (canNextPlayerFork(board, botSymbol, nextPlayer, winCondition)) {
-            System.out.println("other can fork");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (canDoubleFork(board, botSymbol, winCondition)) {
-            System.out.println("can double fork");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (canNextPlayerDoubleFork(board, botSymbol, nextPlayer, winCondition)) {
-            System.out.println("other can double fork");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        if (makeInformedMove(board, botSymbol)){
-            System.out.println("Making informed move near other pieces and towards center");
-            st.push(Functions.makeBoardCopy(board));
-            return new int[] {row, col};
-        }
-
-        makeTrueRandomMove(board, botSymbol);
-        System.out.println("Moving randomly");
-        st.push(Functions.makeBoardCopy(board));
-
-        return new int[] {row,col};
-    }
-
-    public static boolean canBotWin(char[][] board, char botSymbol, int winCondition){
+    public static boolean canBotWin(char[][] board, char botSymbol, int winSequence){
         int n = board.length;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (board[i][j] != ' ') continue;
                 board[i][j] = botSymbol;
-                if (Functions.checkWinner(board, winCondition, botSymbol, i, j)) {
+                if (Functions.checkWinner(board, winSequence, botSymbol, i, j)) {
                     row = i;
                     col = j;
                     return true;
@@ -78,7 +24,7 @@ public class Bot {
         return false;
     }
 
-    public static boolean canOtherPlayersWin(char[][] board, char botSymbol, int playerNumber, int winCondition, int noOfPlayers, char[] playerList){
+    public static boolean canOtherPlayersWin(char[][] board, char botSymbol, int playerNumber, int winSequence, int noOfPlayers, char[] playerList){
 
         int n = board.length;
         int temp = playerNumber;
@@ -89,7 +35,7 @@ public class Bot {
                 for (int j = 0; j < n; j++) {
                     if (board[i][j] != ' ') continue;
                     board[i][j] = thisPlayer;
-                    if (Functions.checkWinner(board, winCondition, thisPlayer, i, j)) {
+                    if (Functions.checkWinner(board, winSequence, thisPlayer, i, j)) {
                         row = i;
                         col = j;
                         board[i][j] = botSymbol;
@@ -102,7 +48,7 @@ public class Bot {
         return false;
     }
 
-    public static boolean canFork(char[][] board, char botSymbol, int winCondition){
+    public static boolean canFork(char[][] board, char botSymbol, int winSequence){
 
         int n = board.length;
         for (int i = 0; i < n; i++) {
@@ -119,7 +65,7 @@ public class Bot {
                     for (int l = 0; l < n; l++) {
                         if (board[k][l] != ' ') continue;
                         board[k][l] = botSymbol;
-                        if (Functions.checkWinner(board, winCondition, botSymbol, k, l)) winningMoves++;
+                        if (Functions.checkWinner(board, winSequence, botSymbol, k, l)) winningMoves++;
                         board[k][l] = ' ';
                     }
                 }
@@ -128,11 +74,10 @@ public class Bot {
                 board[i][j] = ' ';
             }
         }
-
         return false;
     }
 
-    public static boolean canNextPlayerFork(char[][] board, char botSymbol ,char nextPlayer, int winCondition){
+    public static boolean canNextPlayerFork(char[][] board, char botSymbol ,char nextPlayer, int winSequence){
         int n = board.length;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -148,7 +93,7 @@ public class Bot {
                     for (int l = 0; l < n; l++) {
                         if (board[k][l] != ' ') continue;
                         board[k][l] = nextPlayer;
-                        if (Functions.checkWinner(board, winCondition, nextPlayer, k, l)) winningMoves++;
+                        if (Functions.checkWinner(board, winSequence, nextPlayer, k, l)) winningMoves++;
                         board[k][l] = ' ';
                     }
                 }
@@ -160,11 +105,10 @@ public class Bot {
                 board[i][j] = ' ';
             }
         }
-
         return false;
     }
 
-    public static boolean canDoubleFork(char[][] board, char botSymbol, int winCondition){
+    public static boolean canDoubleFork(char[][] board, char botSymbol, int winSequence){
         int n = board.length;
 
         for (int i = 0; i < n; i++) {
@@ -183,7 +127,7 @@ public class Bot {
                         if (board[k][l] != ' ') continue;
 
                         board[k][l] = botSymbol;
-                        if (Functions.checkWinner(board, winCondition, botSymbol, k, l)) winningMoves++;
+                        if (Functions.checkWinner(board, winSequence, botSymbol, k, l)) winningMoves++;
 
                         int secondaryWinningMoves = 0;
 
@@ -191,7 +135,7 @@ public class Bot {
                             for (int b = 0; b < n; b++) {
                                 if (board[a][b] != ' ' ) continue;
                                 board[a][b] = botSymbol;
-                                if (Functions.checkWinner(board, winCondition, botSymbol, a, b)) secondaryWinningMoves++;
+                                if (Functions.checkWinner(board, winSequence, botSymbol, a, b)) secondaryWinningMoves++;
                                 board[a][b] = ' ';
                             }
                         }
@@ -209,7 +153,7 @@ public class Bot {
         return false;
     }
 
-    public static boolean canNextPlayerDoubleFork(char[][] board, char botSymbol, char nextPlayer, int winCondition){
+    public static boolean canNextPlayerDoubleFork(char[][] board, char botSymbol, char nextPlayer, int winSequence){
         int n = board.length;
 
         for (int i = 0; i < n; i++) {
@@ -228,7 +172,7 @@ public class Bot {
                         if (board[k][l] != ' ') continue;
 
                         board[k][l] = nextPlayer;
-                        if (Functions.checkWinner(board, winCondition, nextPlayer, k, l)) winningMoves++;
+                        if (Functions.checkWinner(board, winSequence, nextPlayer, k, l)) winningMoves++;
 
                         int secondaryWinningMoves = 0;
 
@@ -236,7 +180,7 @@ public class Bot {
                             for (int b = 0; b < n; b++) {
                                 if (board[a][b] != ' ' ) continue;
                                 board[a][b] = nextPlayer;
-                                if (Functions.checkWinner(board, winCondition, nextPlayer, a, b)) secondaryWinningMoves++;
+                                if (Functions.checkWinner(board, winSequence, nextPlayer, a, b)) secondaryWinningMoves++;
                                 board[a][b] = ' ';
                             }
                         }
@@ -272,7 +216,6 @@ public class Bot {
                 if (board[i][j] != ' ' ){
                     if ( i < n/2 && j< n/2){
                         if (board[i+1][j+1] == ' ') {
-                            System.out.println(1);
                             row = i+1;
                             col = j+1;
                             board[row][col] = botSymbol;
@@ -280,7 +223,6 @@ public class Bot {
                         }
                     } else if ( i >= n/2 && j < n/2){
                         if (board[i-1][j+1] == ' ') {
-                            System.out.println(2);
                             row = i-1;
                             col = j+1;
                             board[row][col] = botSymbol;
@@ -288,7 +230,6 @@ public class Bot {
                         }
                     } else if ( i < n/2 && j >= n/2){
                         if (board[i+1][j-1] == ' ') {
-                            System.out.println(3);
                             row = i+1;
                             col = j-1;
                             board[row][col] = botSymbol;
@@ -296,7 +237,6 @@ public class Bot {
                         }
                     } else {
                         if (board[i-1][j-1] == ' ') {
-                            System.out.println(4);
                             row = i-1;
                             col = j-1;
                             board[row][col] = botSymbol;
@@ -306,7 +246,6 @@ public class Bot {
                 }
             }
         }
-
         return false;
     }
 
@@ -326,7 +265,6 @@ public class Bot {
 
         row = randPos/n;
         col = randPos%n;
-        System.out.println(board[row][col]);
         board[row][col] = botSymbol;
     }
 

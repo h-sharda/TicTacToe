@@ -140,10 +140,19 @@ public class BoardGUI {
 
     // HANDLES THE BOT MOVES
     private static void makeBotTurn() {
-        if (playerTypes[playerNumber] == 'C') {
+
+        if (playerTypes[playerNumber] != 'H') {
+            char botType = playerTypes[playerNumber];
             char currentPlayer = playerList[playerNumber];
 
-            int[] botMove = Bot.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
+            int[] botMove;
+
+            if (botType == '1') botMove = Bot1.makeMove(actualBoard, boardHistory, currentPlayer, winSequence);
+            else if (botType == '2') botMove = Bot2.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
+            else if (botType == '3') botMove = Bot3.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
+            else if (botType == '4') botMove =  Bot4.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
+            else botMove = Bot5.makeMove(actualBoard, boardHistory, currentPlayer, playerNumber, winSequence, noOfPlayers, playerList);
+
             int row = botMove[0], col = botMove[1];
 
             displayBoard[row][col].setText(""+currentPlayer);
