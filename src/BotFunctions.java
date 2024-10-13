@@ -268,4 +268,27 @@ public class BotFunctions {
         board[row][col] = botSymbol;
     }
 
+    public static boolean specialCase(char[][] board, char botSymbol, char nextPlayer,int winSequence, int playerNumber){
+        int n = board.length;
+        if (n != 3 || playerNumber != 1) return false;
+        int filledChars = 0;
+        for (int i = 0; i < 9; i++) {
+            if (board[i/3][i%3] != ' ') filledChars++;
+        }
+
+        if (filledChars == 3){
+            if (board[1][1] == botSymbol){
+                boolean case1 = board[0][0] == nextPlayer && board[2][2] == nextPlayer;
+                boolean case2 = board[0][2] == nextPlayer && board[2][0] == nextPlayer;
+                if (case1 || case2){
+                    row = 0;
+                    col = 1;
+                    board[0][1] = botSymbol;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
