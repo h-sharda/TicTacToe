@@ -206,22 +206,23 @@ public class BoardGUI {
     }
 
     private static void handleUndo(){
-
         if (boardHistory.size() <= 1) return;
 
         int prevPlayer = (playerNumber - 1 + noOfPlayers) % noOfPlayers;
-        while (playerTypes[prevPlayer] == 'C') {
+        boolean humanMoveFound = false;
+
+        while (!humanMoveFound) {
             if(boardHistory.size() <= 1) {
                 handleReset();
                 return;
             }
             Functions.undoMove(actualBoard, boardHistory);
-            prevPlayer = (prevPlayer - 1 + noOfPlayers) % noOfPlayers;
+            if (playerTypes[prevPlayer] == 'H') humanMoveFound = true;
+            else prevPlayer = (prevPlayer - 1 + noOfPlayers) % noOfPlayers;
         }
 
-        // Now the board state is at the last human move
+        // NOW THE BOARD WILL BE AT THE LAST HUMAN MOVE
         System.out.println("Undoing the last human move");
-        Functions.undoMove(actualBoard, boardHistory);
         playerNumber = prevPlayer;
         gameEnd = false;
 
@@ -235,8 +236,8 @@ public class BoardGUI {
         playerNumber = 0;
         gameEnd = false;
         lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
-        makeBotTurn();
         updateDisplayBoard();
+        makeBotTurn();
     }
 
 }
