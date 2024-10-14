@@ -281,9 +281,21 @@ public class BotFunctions {
                 boolean case1 = board[0][0] == nextPlayer && board[2][2] == nextPlayer;
                 boolean case2 = board[0][2] == nextPlayer && board[2][0] == nextPlayer;
                 if (case1 || case2){
-                    row = 0;
-                    col = 1;
-                    board[0][1] = botSymbol;
+                    int choice = random.nextInt(4);
+                    if (choice  == 1) {
+                        row = 0;
+                        col = 1;
+                    } else if (choice == 2){
+                        row = 1;
+                        col = 0;
+                    } else if (choice == 3){
+                        row = 1;
+                        col = 2;
+                    } else {
+                        row = 2;
+                        col = 1;
+                    }
+                    board[row][col] = botSymbol;
                     return true;
                 }
             }
