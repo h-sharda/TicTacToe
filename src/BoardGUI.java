@@ -123,7 +123,13 @@ public class BoardGUI {
         gameFrame.setVisible(true);
 
         // MAKING THE BOT MOVE IF ITS BOT MOVE IN STARTING
-        makeBotTurn();
+        if (playerTypes[0] != 'H') {
+            SwingUtilities.invokeLater(() -> {
+                Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotTurn());
+                timer.setRepeats(false);
+                timer.start();
+            });
+        }
     }
 
 
@@ -170,9 +176,15 @@ public class BoardGUI {
 
             playerNumber = (playerNumber+1)%noOfPlayers;
             lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
-        } else return;
 
-        if (!gameEnd) makeBotTurn();
+            if (!gameEnd && playerTypes[playerNumber]!='H') {
+                SwingUtilities.invokeLater(() -> {
+                    Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotTurn());
+                    timer.setRepeats(false);
+                    timer.start();
+                });
+            }
+        }
     }
 
     // HANDLE HUMAN MOVES
@@ -203,8 +215,13 @@ public class BoardGUI {
             playerNumber = (playerNumber+1)% noOfPlayers;
             lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
 
-            if (!gameEnd) makeBotTurn();
-
+            if (!gameEnd && playerTypes[playerNumber]!='H') {
+                SwingUtilities.invokeLater(() -> {
+                    Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotTurn());
+                    timer.setRepeats(false);
+                    timer.start();
+                });
+            }
         }
     }
 
@@ -246,7 +263,13 @@ public class BoardGUI {
         gameEnd = false;
         lblDisplayCurrentPlayer.setText("<html>"+playerList[playerNumber] +"'s TURN</html>");
         updateDisplayBoard();
-        makeBotTurn();
+        if (!gameEnd && playerTypes[playerNumber]!='H') {
+            SwingUtilities.invokeLater(() -> {
+                Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotTurn());
+                timer.setRepeats(false);
+                timer.start();
+            });
+        }
     }
 
 }

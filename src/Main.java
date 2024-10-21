@@ -9,6 +9,7 @@ public class Main {
 
     public static final char[] DEFAULT_PLAYER_LIST = {'✖', '◯', '△','☐', '◇'};
     public static final char[] DEFAULT_PLAYER_TYPES = {'H', 'H', 'H', 'H', 'H'};
+    public static final int BOT_THINKING_START_DELAY = 100;
 
 
     // COMMON FONTS AND COLORS ACROSS THE GAME
